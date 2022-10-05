@@ -45,8 +45,10 @@ class onTap extends StatelessWidget {
                             color: Colors.black,
                             fontWeight: FontWeight.bold)),
                   ),
-                  background:
-                      Image.network(objectPassed?.DataList[dex]["image"]),
+                  background: Hero(
+                      tag: dex,
+                      child:
+                          Image.network(objectPassed?.DataList[dex]["image"])),
                 )),
             SliverToBoxAdapter(
                 child: Column(
@@ -84,19 +86,23 @@ class onTap extends StatelessWidget {
             )), // SliverList
           ]),
           Positioned(
-            top: 14,
-            child: Container(
-              margin: EdgeInsets.only(left: 10),
-              padding: EdgeInsets.only(left: 5),
-              alignment: Alignment.center,
-              child: Text("Discout 25%"),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.pink.shade500,
+            left: 10,
+            top: 10,
+            child: RotationTransition(
+              turns: AlwaysStoppedAnimation(20 / 360),
+              child: Container(
+                padding: EdgeInsets.all(5),
+                alignment: Alignment.center,
+                width: 87,
+                height: 100,
+                child: Text("Discout 25%"),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.pink.shade500,
+                ),
               ),
-              height: 100,
             ),
-          )
+          ),
         ],
       ),
     );

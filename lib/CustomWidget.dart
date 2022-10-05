@@ -7,8 +7,9 @@ class CustomWidget extends StatelessWidget {
   ListData? lista2;
   int fendix;
   double topper = 0;
+  int item = 0;
 
-  CustomWidget({this.lista2, required this.fendix});
+  CustomWidget({this.lista2, required this.fendix, required this.item});
 
   @override
   get primaryColor => Colors.purple;
@@ -24,11 +25,10 @@ class CustomWidget extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            onTap(objectPassed: lista2, dex: fendix)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  item++;
+                  return onTap(objectPassed: lista2, dex: fendix);
+                }));
               },
               child: Container(
                 margin: EdgeInsets.only(top: 60),
@@ -98,25 +98,13 @@ class CustomWidget extends StatelessWidget {
                           builder: (context) =>
                               onTap(objectPassed: lista2, dex: fendix)));
                 },
-                child: Image.network(
-                  lista2!.DataList[fendix]["image"],
-                  height: 160,
-                  width: 150,
-                ),
-              ),
-            ),
-            Positioned(
-              left: 100,
-              top: 10,
-              child: Container(
-                // margin: EdgeInsets.only(left: 10),
-                alignment: Alignment.center,
-                width: 77,
-                height: 100,
-                child: Text("Discout 25%"),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.pink.shade500,
+                child: Hero(
+                  tag: fendix,
+                  child: Image.network(
+                    lista2!.DataList[fendix]["image"],
+                    height: 160,
+                    width: 150,
+                  ),
                 ),
               ),
             ),

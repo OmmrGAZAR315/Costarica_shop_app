@@ -13,6 +13,7 @@ class Shooping extends StatefulWidget {
 
 class _Shooping extends State<Shooping> {
   ListData? lista;
+  int item = 0;
 
   Dio dio = Dio();
 
@@ -29,6 +30,7 @@ class _Shooping extends State<Shooping> {
   Future<ListData> getData() async {
     Response response = await dio.get(url);
     lista = ListData.fromJson((response.data));
+
     return lista!;
   }
 
@@ -40,6 +42,11 @@ class _Shooping extends State<Shooping> {
         appBar: AppBar(
           shadowColor: Colors.pink,
           actions: [
+            IconButton(
+                onPressed: () {
+                  showSearch(context: context, delegate: SearchBar());
+                },
+                icon: Icon(Icons.search)),
             IconButton(
                 onPressed: () {},
                 icon: Icon(
@@ -59,6 +66,7 @@ class _Shooping extends State<Shooping> {
                     itemBuilder: (context, int index) => CustomWidget(
                       lista2: lista,
                       fendix: index,
+                      item: item,
                     ),
                     itemCount: lista!.DataList.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -103,5 +111,62 @@ class _Shooping extends State<Shooping> {
                       );
           },
         ));
+  }
+}
+
+class SearchBar extends SearchDelegate {
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    IconButton(
+        onPressed: () {
+          if (query.isEmpty) {
+            close(context, null);
+          } else
+            query = '';
+        },
+        icon: Icon(Icons.clear));
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          close(context, null);
+        },
+        icon: Icon(Icons.arrow_back));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Center(
+      child: Text(
+        query,
+        style: TextStyle(fontSize: 64),
+      ),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List sugg = [];
+    return ListView.builder(
+      itemCount: sugg.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Column(
+            children: [
+              Text(sugg[2]),
+              Text(sugg[3]),
+              Text(sugg[1]),
+              Text(sugg[0]),
+            ],
+          ),
+          onTap: () {
+            query = sugg[3];
+            showResults(context);
+          },
+        );
+      },
+    );
   }
 }
